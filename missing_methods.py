@@ -57,8 +57,8 @@ unique_grid = [(x, y) for x in [1, 2, 3] for y in [3, 1, 4] if x != y]
 print('Original grid:', unique_grid)
 
 new_unique_grid = []
-for x in [1 , 2, 3]:
+for x in [1, 2, 3]:
     for y in [3, 1, 4]:
         if x != y:
-            new_unique_grid.append((x,y))
+            new_unique_grid.append((x, y))
 print('New grid with for loops: ', new_unique_grid)
