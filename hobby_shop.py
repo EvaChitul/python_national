@@ -29,6 +29,9 @@ def restock(inventory):
 # restock(shop_articles)
 
 def sell_last(inventory):
+    if not inventory:
+        print('The shop has no items to sell ')
+        return
     print('The last item has been sold and removed from the inventory: ', inventory.pop())
 
 
@@ -38,8 +41,14 @@ def sell_last(inventory):
 def sell_item(inventory):
     article_to_remove = input('What article do you want to sell? :')
     size_article = input('What size do you want to sell?: XS/S/M/XL/XXL ')
-    inventory.remove((article_to_remove,size_article))
 
-    print ('Item has been sold and removed from inventory: ', inventory)
+    if (article_to_remove, size_article) not in inventory:
+        print ('Item does not exist in shop')
+        return
 
-sell_item(shop_articles)
+    inventory.remove((article_to_remove, size_article))
+
+    print('Item has been sold and removed from inventory: ', inventory)
+
+
+# sell_item(shop_articles)
