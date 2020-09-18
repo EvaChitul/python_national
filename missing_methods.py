@@ -54,7 +54,7 @@ print('Copy of sports list after first element in list has been removed: ', dupl
 # II. unique_grid with regular 'for' loops
 
 unique_grid = [(x, y) for x in [1, 2, 3] for y in [3, 1, 4] if x != y]
-print('Original grid:', unique_grid, '\n')
+print('Original grid:', unique_grid)
 
 new_unique_grid = []
 for x in [1 , 2, 3]:
