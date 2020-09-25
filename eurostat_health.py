@@ -41,11 +41,8 @@ written_eurostat_data = [('Belgium', 2017, 'Males', '1.8'), ('Belgium', 2017, 'F
 ('Finland', 2018, 'Females', '1.9'), ('Sweden', 2018, 'Males', '1.6'), ('Sweden', 2018, 'Females', '3.1'), ('United Kingdom', 2018, 'Males', '2'),
 ('United Kingdom', 2018, 'Females', '2.8')]
 
-# print(written_eurostat_data)
-
 
 # 1st Assignment
-
 health_index_2017_males = {country: [sex, health_index] for country, year, sex, health_index in written_eurostat_data if year == 2017 and sex == 'Males'}
 health_index_2017_females = {country: [sex, health_index] for country, year, sex, health_index in written_eurostat_data if year == 2017 and sex == 'Females'}
 # print('Health Index for 2017, males: ', health_index_2017_males)
@@ -70,7 +67,6 @@ print('Health Index 2018: ', health_index_2018, '\n')
 
 
 # 2nd Assignment
-
 germany_males = {year: [sex, health_index] for country, year, sex, health_index in written_eurostat_data if country == 'Germany' and sex == 'Males'}
 germany_females = {year: [sex, health_index] for country, year, sex, health_index in written_eurostat_data if country == 'Germany' and sex == 'Females'}
 
@@ -82,7 +78,6 @@ print('Health Index for Germany: ', germany, '\n')
 
 
 # 3rd Assignment
-
 all_data_2017_males = {country: [year, sex, health_index] for country, year, sex, health_index in written_eurostat_data if year == 2017 and sex == 'Males'}
 all_data_2017_females = {country: [year, sex, health_index] for country, year, sex, health_index in written_eurostat_data if year == 2017 and sex == 'Females'}
 all_data_2018_males = {country: [year, sex, health_index] for country, year, sex, health_index in written_eurostat_data if year == 2018 and sex == 'Males'}
@@ -112,6 +107,9 @@ print('Health index 2017-2018 greater than 5: ', health_index_greater_five_optim
 
 
 # 5th Assignment
-health_index_five_female = {key: [val for val in values if float(val[2]) > 5 and val[1] == 'Female'] for key, values in health_index_full.items()}
-health_index_greater_five_female_optimised = {key: value for key, value in health_index_greater_five.items() if value}
-print('Health index 2017-2018 greater than 5 for women: ', health_index_greater_five_female_optimised, '\n')
+health_index_five_female = {key: [val for val in values if val[1] == 'Females'] for key, values in health_index_greater_five_optimised.items()}
+print('Health index 2017-2018 greater than 5 for women: ', health_index_five_female, '\n')
+
+# 6th Assignment
+for key, values in health_index_full.items():
+    print(key, values)
