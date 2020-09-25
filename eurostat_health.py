@@ -102,20 +102,16 @@ for elems in ( all_data_2018_females, all_data_2018_males ):
 # print('All data in Health Index 2018: ', health_index_full_2018)
 
 health_index_full = {**health_index_full_2017, **health_index_full_2018}
-print ('All data in Health Index 2017-2018', health_index_full, '\n')
+print('All data in Health Index 2017-2018', health_index_full, '\n')
+
 
 # 4th Assignment
+health_index_greater_five = {key: [val for val in values if float(val[2]) > 5] for key, values in health_index_full.items()}
+health_index_greater_five_optimised = {key: value for key, value in health_index_greater_five.items() if value}
+print('Health index 2017-2018 greater than 5: ', health_index_greater_five_optimised, '\n')
 
-health_index_greater_five_2017 = {country: [year, sex, health_index] for country, year, sex, health_index in written_eurostat_data if float(health_index) > 5 and year == 2017}
-health_index_greater_five_2018 = {country: [year, sex, health_index] for country, year, sex, health_index in written_eurostat_data if float(health_index) > 5 and year == 2018}
-
-health_index_greater_five = defaultdict(list)
-for elem in (health_index_greater_five_2017, health_index_greater_five_2018):
-    for key, values in elem.items():
-        health_index_greater_five[key].append(values)
-
-print ('Health index 2017-2018 greater than 5: ', health_index_greater_five, '\n')
 
 # 5th Assignment
-health_index_five_female = {country:[year, sex, health_index] for country, year, sex, health_index in health_index_greater_five if sex == 'Female'}
-print (health_index_greater_five)
+health_index_five_female = {key: [val for val in values if float(val[2]) > 5 and val[1] == 'Female'] for key, values in health_index_full.items()}
+health_index_greater_five_female_optimised = {key: value for key, value in health_index_greater_five.items() if value}
+print('Health index 2017-2018 greater than 5 for women: ', health_index_greater_five_female_optimised, '\n')
