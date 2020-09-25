@@ -1,3 +1,19 @@
+'''
+Using data from Eurostat, create a list of tuples representing the“Self-perceived health by country and sex, agegroup >16, for people living in cities”for 2017-2018.
+Have at least 30 values in your dataset.The dataset will have the following structure:[ (country, year, sex, health_index)]
+Example:[(‘France’, 2017, M, 12), . . . ]
+
+Using only comprehensions, create the following dicts:
+•  two dicts that group all data by country for each year
+health_index_2017 = {‘France’: [sex, health_index]}
+health_index_2018 = {‘France’: [sex, health_index]}
+•  one dict that groups all data by year for Germany germany = {2017: [sex, health_index]}
+•  one dict that grups all data by country and year, by using year in the key together with the country name health_index = {‘France_2017’: [year, sex, health_index]}
+•  starting from the previoushealth_indexdict, display only the data where the health_index > 5
+•  starting from the previoushealth_indexdict, display only the data where the health_index > 5 and sex is ‘F’
+•  starting from the previoushealth_indexdict, create a for loop to print the health_index
+'''
+
 # import pandas as pd
 
 # eurostat_file = pd.read_csv(r'/home/eva/python_national/Eurostat Health Index/hlth_silc_01/hlth_silc_01_1_Data.csv')
@@ -42,7 +58,7 @@ written_eurostat_data = [('Belgium', 2017, 'Males', '1.8'), ('Belgium', 2017, 'F
 ('United Kingdom', 2018, 'Females', '2.8')]
 
 
-# 1st Assignment
+# 1st Assignment - two dicts that group all data by country for each year
 health_index_2017_males = {country: [sex, health_index] for country, year, sex, health_index in written_eurostat_data if year == 2017 and sex == 'Males'}
 health_index_2017_females = {country: [sex, health_index] for country, year, sex, health_index in written_eurostat_data if year == 2017 and sex == 'Females'}
 # print('Health Index for 2017, males: ', health_index_2017_males)
@@ -66,7 +82,7 @@ for elems in (health_index_2018_males, health_index_2018_females):
 print('Health Index 2018: ', health_index_2018, '\n')
 
 
-# 2nd Assignment
+# 2nd Assignment - one dict that groups all data by year for Germany
 germany_males = {year: [sex, health_index] for country, year, sex, health_index in written_eurostat_data if country == 'Germany' and sex == 'Males'}
 germany_females = {year: [sex, health_index] for country, year, sex, health_index in written_eurostat_data if country == 'Germany' and sex == 'Females'}
 
@@ -77,7 +93,7 @@ for elems in (germany_males, germany_females):
 print('Health Index for Germany: ', germany, '\n')
 
 
-# 3rd Assignment
+# 3rd Assignment - one dict that groups all data by country and year, by using year in the key together with the country name
 all_data_2017_males = {country: [year, sex, health_index] for country, year, sex, health_index in written_eurostat_data if year == 2017 and sex == 'Males'}
 all_data_2017_females = {country: [year, sex, health_index] for country, year, sex, health_index in written_eurostat_data if year == 2017 and sex == 'Females'}
 all_data_2018_males = {country: [year, sex, health_index] for country, year, sex, health_index in written_eurostat_data if year == 2018 and sex == 'Males'}
@@ -100,16 +116,17 @@ health_index_full = {**health_index_full_2017, **health_index_full_2018}
 print('All data in Health Index 2017-2018', health_index_full, '\n')
 
 
-# 4th Assignment
+# 4th Assignment - starting from the previous health_index dict, display only the data where the health_index > 5
 health_index_greater_five = {key: [val for val in values if float(val[2]) > 5] for key, values in health_index_full.items()}
 health_index_greater_five_optimised = {key: value for key, value in health_index_greater_five.items() if value}
 print('Health index 2017-2018 greater than 5: ', health_index_greater_five_optimised, '\n')
 
 
-# 5th Assignment
+# 5th Assignment - starting from the previous health_index dict, display only the data where the health_index > 5 and sex is ‘F’
 health_index_five_female = {key: [val for val in values if val[1] == 'Females'] for key, values in health_index_greater_five_optimised.items()}
 print('Health index 2017-2018 greater than 5 for women: ', health_index_five_female, '\n')
 
-# 6th Assignment
+
+# 6th Assignment - starting from the previous health_index dict, create a for loop to print the health_index
 for key, values in health_index_full.items():
     print(key, values)
