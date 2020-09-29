@@ -1,4 +1,3 @@
-from collections import defaultdict
 
 description = ('Country', [
     '2011 ', '2012 ', '2013 ', '2014 ', '2015 ', '2016 ', '2017 ', '2018 ',
@@ -69,7 +68,7 @@ print(full_dataset, '\n')
 
 def year_data(dataset, year):
     year_dict = {year.strip(): []}
-    print(year_dict, '\n')
+    # print(year_dict, '\n')
 
     for country, element in dataset.items():
         for entry in element:
