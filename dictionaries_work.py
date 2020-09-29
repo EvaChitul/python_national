@@ -47,7 +47,17 @@ raw_data = [
     ('XK', [': ', ': ', ': ', ': ', ': ', ': ', '89 ', '93 ', '93 ']),
 ]
 
-country_dict = defaultdict(list)
-country_dict = {country: [] for country, *_ in raw_data}
+def prep_dataset(years, dataset):
+    country_dict = defaultdict(list)
+    country_dict = {country: [] for country, *_ in dataset}
 
-print(country_dict)
+    length_years = len(years[1])
+
+    for num in range(length_years):
+        for country, elements in dataset:
+            country_dict[country].append({'year': years[1][num], 'coverage': elements[num]})
+
+    return country_dict
+
+
+print(prep_dataset(description, raw_data))
