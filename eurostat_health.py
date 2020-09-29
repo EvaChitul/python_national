@@ -48,7 +48,7 @@ written_eurostat_data = [('Belgium', 2017, 'Males', '1.8'), ('Belgium', 2017, 'F
 ('Greece', 2018, 'Females', '1'), ('Spain', 2018, 'Males', '1.2'), ('Spain', 2018, 'Females', '2'), ('France', 2018, 'Males', '2.8'),
 ('France', 2018, 'Females', '4.3'), ('Croatia', 2018, 'Males', '3.3'), ('Croatia', 2018, 'Females', '3.8'), ('Italy', 2018, 'Males', '0.8'),
 ('Italy', 2018, 'Females', '1.3'), ('Cyprus', 2018, 'Males', '0.9'), ('Cyprus', 2018, 'Females', '0.9'), ('Latvia', 2018, 'Males', '3.1'),
-('Latvia', 2018, 'Females', '4.3'), ('Lithuania', 2018, 'Males', '3.2'), ('Lithuania', 2018, 'Females', '2.9'), ('Luxembourg', 2018, 'Males', '4.1'),
+('Latvia', 2018, 'Females', '4.3'), ('Lithuania', 2018, 'Males', '3.2'), ('Lithuania', 2018, 'Females', '2.9'), ('Luxembourg', 2018, 'Males', '5.1'),
 ('Luxembourg', 2018, 'Females', '5.3'), ('Hungary', 2018, 'Males', '2.7'), ('Hungary', 2018, 'Females', '3'), ('Malta', 2018, 'Males', '0.9'),
 ('Malta', 2018, 'Females', '1'), ('Netherlands', 2018, 'Males', '1.7'), ('Netherlands', 2018, 'Females', '1.2'), ('Austria', 2018, 'Males', '2.1'),
 ('Austria', 2018, 'Females', '2.2'), ('Poland', 2018, 'Males', '3.4'), ('Poland', 2018, 'Females', '2.9'), ('Portugal', 2018, 'Males', '3'),
@@ -130,3 +130,38 @@ print('Health index 2017-2018 greater than 5 for women: ', health_index_five_fem
 # 6th Assignment - starting from the previous health_index dict, create a for loop to print the health_index
 for key, values in health_index_full.items():
     print(key, values)
+
+# Alternative solution
+
+health_2017 = defaultdict(list)
+# for country, *_ in written_eurostat_data:
+#     health_2017[country] = []
+# print(health_2017)
+
+# for country, year, sex, health_index in written_eurostat_data:
+#     if year == 2017:
+#         health_2017[country].append((sex, health_index))
+# print('New version 2017 health overview: ',health_2017)
+
+health_2017 = {country: [] for country, *_ in written_eurostat_data}
+dummy_health = [health_2017[country].append((sex, health_index)) for country, year, sex, health_index in written_eurostat_data if year == 2017]
+print('New version 2017 health overview: ', health_2017)
+
+health_2018 = defaultdict(list)
+health_2018 = {country: [] for country, *_ in written_eurostat_data}
+dummy_health = [health_2018[country].append((sex, health_index)) for country, year, sex, health_index in written_eurostat_data if year == 2018]
+print('New version 2018 health overview: ', health_2018)
+
+germany_new = defaultdict(list)
+dummy_health = [germany_new[country].append((sex, health_index)) for country, year, sex, health_index in written_eurostat_data if country == 'Germany']
+print('New Germany 2017-2018 health overview: ', germany_new)
+
+all_health = defaultdict(list)
+all_health = {country: [] for country, *_ in written_eurostat_data}
+dummy_health = [all_health[country].append((year, sex, health_index)) for country, year, sex, health_index in written_eurostat_data]
+print('All health data 2017-2018: ', all_health)
+
+# greater_than_five = defaultdict(list)
+# greater_than_five = {country: [] for country, *_ in all_health}
+# dummy_health = [greater_than_five[country].append(year, sex, health_index) for country, year, sex, health_index in all_health if float(health_index) > 5]
+# print('Greater than five index new: ', greater_than_five)
