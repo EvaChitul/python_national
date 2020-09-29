@@ -66,11 +66,11 @@ def prep_dataset(years, dataset):
 full_dataset = prep_dataset(description, raw_data)
 print(full_dataset, '\n')
 
-year_dict = {year.strip(): [] for year in description[1]}
-print(year_dict, '\n')
-
 
 def year_data(dataset, year):
+    year_dict = {year.strip(): []}
+    print(year_dict, '\n')
+
     for country, element in dataset.items():
         for entry in element:
             if entry['year'].strip() == year:
@@ -80,4 +80,7 @@ def year_data(dataset, year):
 
 
 data_from_year = year_data(full_dataset, '2011')
-print(data_from_year)
+print(data_from_year, '\n')
+
+data_from_year = year_data(full_dataset, '2013')
+print(data_from_year, '\n')
