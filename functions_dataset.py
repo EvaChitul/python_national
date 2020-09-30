@@ -83,3 +83,22 @@ print(data_from_year, '\n')
 
 data_from_year = year_data(full_dataset, '2013')
 print(data_from_year, '\n')
+
+
+def country_data(dataset, country):
+    country_dict = {country: []}
+    # print(country_dict, '\n')
+
+    for countries, elements in dataset.items():
+        if countries == country:
+            for entry in elements:
+                country_dict[country].append((entry['year'].strip(), entry['coverage']))
+
+    return country_dict
+
+
+data_from_country = country_data(full_dataset, 'AL')
+print(data_from_country)
+
+data_from_country = country_data(full_dataset, 'BG')
+print(data_from_country)
