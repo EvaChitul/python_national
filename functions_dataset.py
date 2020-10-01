@@ -1,4 +1,3 @@
-
 description = ('Country', [
     '2011 ', '2012 ', '2013 ', '2014 ', '2015 ', '2016 ', '2017 ', '2018 ',
     '2019 '
@@ -46,6 +45,8 @@ raw_data = [
     ('XK', [': ', ': ', ': ', ': ', ': ', ': ', '89 ', '93 ', '93 ']),
 ]
 
+# 1 Function that prepares the dataset
+
 
 def prep_dataset(years, dataset):
     country_dict = {country: [] for country, *_ in dataset}
@@ -63,7 +64,10 @@ def prep_dataset(years, dataset):
 
 
 full_dataset = prep_dataset(description, raw_data)
-print(full_dataset, '\n')
+print('This is the revised dataset: ', full_dataset, '\n')
+
+
+# 2 Function to retrieve data for each year
 
 
 def year_data(dataset, year):
@@ -79,10 +83,13 @@ def year_data(dataset, year):
 
 
 data_from_year = year_data(full_dataset, '2011')
-print(data_from_year, '\n')
+print('The data for the year is: ', data_from_year, '\n')
 
 data_from_year = year_data(full_dataset, '2013')
-print(data_from_year, '\n')
+print('The data for the year is: ', data_from_year, '\n')
+
+
+# 3 Function to retrieve data for each country
 
 
 def country_data(dataset, country):
@@ -98,7 +105,29 @@ def country_data(dataset, country):
 
 
 data_from_country = country_data(full_dataset, 'AL')
-print(data_from_country)
+print('The data for the country is: ', data_from_country, '\n')
 
 data_from_country = country_data(full_dataset, 'BG')
-print(data_from_country)
+print('The data for the country is: ', data_from_country, '\n')
+
+# 4 Function to perform average from an iterable (year or country data)
+
+
+def average_data(iterable):
+    number_elements = len(iterable)
+    if number_elements == 0:
+        return 'No elements in list. Cannot perform average'
+    sum_coverage = 0
+
+    for element in iterable:
+        sum_coverage += element[1]
+
+    average = sum_coverage/number_elements
+    return average
+
+
+data_from_country = country_data(full_dataset, 'BE')
+data_from_year = year_data(full_dataset, '2013')
+
+print('Average coverage for the country is: ', average_data(data_from_country['BE']), '\n')
+print('Average coverage for the year is: ', average_data(data_from_year['2013']), '\n')

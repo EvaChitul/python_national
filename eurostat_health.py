@@ -131,6 +131,8 @@ print('Health index 2017-2018 greater than 5 for women: ', health_index_five_fem
 for key, values in health_index_full.items():
     print(key, values)
 
+
+
 # Alternative solution
 
 health_2017 = defaultdict(list)
