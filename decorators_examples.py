@@ -1,4 +1,3 @@
-
 # create a decorator called uppercase that will uppercase the result
 
 def uppercase(func):
