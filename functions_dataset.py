@@ -1,5 +1,5 @@
 
-# WORK COMPLETED WITH ORIGINAL RAW DATA (CONTAINING 'b')
+# WORK COMPLETED REVISED WITH ORIGINAL RAW DATA (CONTAINING 'b')
 
 description = ('Country', [
     '2011 ', '2012 ', '2013 ', '2014 ', '2015 ', '2016 ', '2017 ', '2018 ',
@@ -55,15 +55,12 @@ raw_data = [
 def prep_dataset(years, dataset):
     country_dict = {country: [] for country, *_ in dataset}
 
-    length_years = len(years[1])
-
-    for num in range(length_years):
-        for country, elements in dataset:
-            if elements[num] != ': ':
-                raw_number = elements[num].split()
-                country_dict[country].append({'year': years[1][num], 'coverage': int(raw_number[0])})
+    for country, elements in dataset:
+        for year, coverage in zip(years[1], elements):
+            if coverage == ': ':
+                country_dict[country].append({'year': year, 'coverage': 0})
             else:
-                country_dict[country].append({'year': years[1][num], 'coverage': 0})
+                country_dict[country].append({'year': year, 'coverage': int(coverage.split()[0])})
 
     return country_dict
 
@@ -71,13 +68,11 @@ def prep_dataset(years, dataset):
 full_dataset = prep_dataset(description, raw_data)
 print('This is the revised dataset: ', full_dataset, '\n')
 
-
 # 2 Function to retrieve data for each year
 
 
 def year_data(dataset, year):
     year_dict = {year.strip(): []}
-    # print(year_dict, '\n')
 
     for country, element in dataset.items():
         for entry in element:
@@ -99,7 +94,6 @@ print('The data for the year is: ', data_from_year, '\n')
 
 def country_data(dataset, country):
     country_dict = {country: []}
-    # print(country_dict, '\n')
 
     for countries, elements in dataset.items():
         if countries == country:
@@ -118,21 +112,13 @@ print('The data for the country is: ', data_from_country, '\n')
 # 4 Function to perform average from an iterable (year or country data)
 
 
-def average_data(iterable):
-    number_elements = len(iterable)
-    if number_elements == 0:
-        return 'No elements in list. Cannot perform average'
-    sum_coverage = 0
-
-    for element in iterable:
-        sum_coverage += element[1]
-
-    average = sum_coverage/number_elements
-    return average
+def average_data(dataset_coverage):
+    sum_coverage = [value for _, value in dataset_coverage if value]
+    return sum(sum_coverage)/len(sum_coverage)
 
 
-data_from_country = country_data(full_dataset, 'DE')
-data_from_year = year_data(full_dataset, '2013')
+data_from_country = country_data(full_dataset, 'EE')
+data_from_year = year_data(full_dataset, '2015')
 
-print('Average coverage for the country is: ', average_data(data_from_country['DE']), '\n')
-print('Average coverage for the year is: ', average_data(data_from_year['2013']), '\n')
+print('Average coverage for the country is: ', average_data(data_from_country['EE']), '\n')
+print('Average coverage for the year is: ', average_data(data_from_year['2015']), '\n')
