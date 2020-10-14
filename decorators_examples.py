@@ -16,7 +16,6 @@ def greet(name):
 greet('World')
 greet('Eva')
 
-
 # Create a decorator called safe_divide that will output a message if the division cannot be performed, othervise it will return the result.
 
 def safe_divide(func):
