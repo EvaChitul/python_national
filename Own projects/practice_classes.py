@@ -22,14 +22,7 @@ users = [
 
 users_objects = []
 for user in users:
-    users_objects.append(
-        User(
-            user['name'].split()[0],
-            user['name'].split()[1],
-            user['age'],
-
-        )
-    )
+    users_objects.append(User(user['name'].split()[0], user['name'].split()[1], user['age']) )
 
 for user in users_objects:
-    print(user.first_name, user.last_name, user.age, user.company)
+    print(f' The user name is {user.first_name} {user.last_name}, he is {user.age} years old and works at {user.company}')
