@@ -53,26 +53,24 @@ print(cleaning_product.restock_product((21)))
 
 class FoodProduct(SupermarketProduct):
 
-    def __init__(self, product_brand, product_type, product_origin, product_price, product_quantity, product_unit, contains_allergens = None):
-        self.contains_allergens = contains_allergens if contains_allergens else None
+    def __init__(self, product_brand, product_type, product_origin, product_price, product_quantity, product_unit, allergens = None):
+        self.allergens = allergens
         super().__init__(product_brand, product_type, product_origin, product_price, product_quantity, product_unit)
 
     def allergens_check(self, allergies = None):
         if allergies:
-            self.contains_allergens = allergies
+            self.allergens = allergies
             return f'The product {self.product_type} {self.product_brand} contains allergens.'
         else:
             return f'The product {self.product_type} {self.product_brand} does not contain any known allergens.'
 
     def __str__(self):
-        if self.contains_allergens:
-            return 'Client view: You are looking at the product {} brand {} from {} with the ' \
-               'price {} euros that contains {} allergens \n'.format(self.product_type, self.product_brand,
-                self.product_origin, self.product_price, self.contains_allergens)
+        message_allergens = 'Client view: You are looking at the product {} brand {} from {} with the price {} euros that ' \
+                            'contains'.format(self.product_type,self.product_brand, self.product_origin, self.product_price)
+        if self.allergens:
+            return message_allergens + ' allergens {} \n'.format(self.allergens)
         else:
-            return 'Client view: You are looking at the product {} brand {} from {} with the ' \
-                   'price {} euros that contains no allergens \n'.format(self.product_type,
-                    self.product_brand, self.product_origin, self.product_price)
+            return message_allergens + ' no allergens \n'
 
     @staticmethod
     def welcome_message():
