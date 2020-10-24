@@ -36,9 +36,10 @@ class StudentsCollection:
     def __contains__(self, element):
         return element in self._students
 
+
 students = [Student('John', 'Doe', 19), Student('Jack', 'Fluffy', 18), Student('Matthew', 'Wu', 19),
-    Student('Heather', 'Rafferty', 19), Student('Randall', 'Blackdall', 20), Student('Marissa', 'Raynaud', 19),
-    Student('Marlo', 'Ranbot', 19)]
+            Student('Heather', 'Rafferty', 19), Student('Randall', 'Blackdall', 20), Student('Marissa', 'Raynaud', 19),
+            Student('Marlo', 'Ranbot', 19)]
 
 stud_collection = StudentsCollection(students)
 
@@ -47,3 +48,10 @@ print(type(stud_collection))
 abcs = [MutableMapping, Mapping, Iterable, Collection, Container, Sized]
 for abc in abcs:
     print('stud_collection is a {}: {}'.format(abc.__name__, isinstance(stud_collection, abc)))
+
+
+eva = [Student('Eva', 'Chitul', 31), Student('Ted', 'Bundy', 50)]
+eva_collection = StudentsCollection(eva)
+print(eva[1] in eva_collection)
+
+print('Length of stud collection: ', len(stud_collection),'\nLength of eva collection: ', len(eva_collection))
