@@ -34,7 +34,7 @@ class StudentsCollection:
         return len(self._students)
 
     def __contains__(self, element):
-        return self.__contains__(element)
+        return element in self._students
 
 students = [Student('John', 'Doe', 19), Student('Jack', 'Fluffy', 18), Student('Matthew', 'Wu', 19),
     Student('Heather', 'Rafferty', 19), Student('Randall', 'Blackdall', 20), Student('Marissa', 'Raynaud', 19),
