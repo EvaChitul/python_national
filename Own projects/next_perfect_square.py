@@ -3,6 +3,7 @@ If the parameter is itself not a perfect square then -1 should be returned. You 
 
 import math
 
+
 def find_next_square(sq):
     number = int(math.sqrt(sq))
     if number**2 != sq:
