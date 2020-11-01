@@ -5,29 +5,57 @@ import random
 import pprint
 
 
-class Recipe(Mapping):
+class Recipe:
+    is_initialized = False
 
-    def __init__(self, name, ingredients = None):
+    def __init__(self, name, ingredients):
         self.name = name
         self.ingredients = ingredients if ingredients else {}
 
-    def __iter__(self):
-        return iter(self.ingredients)
+    def __str__(self):
+        number_of_stars = len(self.name) + 3
+        pretty_string = '*' * number_of_stars + '\n' + self.name + '\n' + '*' * number_of_stars + '\n'
+
+        for index, (key, value) in enumerate(self.ingredients.items(), start = 1):
+            pretty_string = '\n'.join((pretty_string, f'{index}. {key.title()}: {value}'))
+
+        pretty_string = pretty_string + '\n' * 2 + '*' * number_of_stars
+        return pretty_string
+
+    def __getitem__(self, given_index):
+        for index, (key, value) in enumerate(self.ingredients.items(), start = 1):
+            if given_index == index:
+                return {key: value}
 
     def __len__(self):
         return len(self.ingredients)
 
-    def __getitem__(self, ingredient):
-        return self.ingredients[ingredient]
+    def __iter__(self):
+        return iter(self.ingredients)
 
-    def __str__(self):
-        print('*'*20,'\n',self.name,'\n','*'*20)
-        for index, ingredient in enumerate(self.ingredients, start = 1):
-            print(index,'.', ingredient.title(),':', self.ingredients[ingredient],'\n')
-        return('*' * 20)
+    def keys(self):
+        return self.ingredients.keys()
 
-    def __repr__(self):
-        print(self.ingredients.keys())
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        if self.is_initialized:
+            raise NameError("You can't update the recipe!")
+        self._name = name
+
+    @property
+    def ingredients(self):
+        return self._ingredients
+
+    @ingredients.setter
+    def ingredients(self, ingredients):
+        if self.is_initialized:
+            raise NameError("You can't update the recipe!")
+        self._ingredients = ingredients
+        self.is_initialized = True
 
 
 class RecipesBox(MutableSequence):
@@ -95,7 +123,12 @@ class Fridge(MutableMapping):
         return iter(self.products_fridge)
 
     def __str__(self):
-        return f'These are the products in your fridge: \n{", ".join(list(self.products_fridge.keys()))}'
+        stars = '*'*20
+        print(stars, '\n', 'Items in Fridge:','\n' )
+        for index, (product, quantity) in enumerate(self.products_fridge.items(), start = 1):
+            print( f'{index}. {product.title()}: {quantity}')
+        return stars
+
 
     def add_item(self, product, quantity):
         self.products_fridge[product] = quantity
@@ -157,70 +190,92 @@ def check_the_fridge(fridge, recipe_box):
     return f'Possible recipes you can make with the products in your fridge:{(list(possible_recipes))}'
 
 
+def prepare_shopping_list(fridge, recipe):
+    products_fridge = {item.lower(): fridge[item] for item in fridge}
 
-mac_and_cheese_ingredients = {'macaroni': 1,'cheese': 0.5 }
+    shopping_list = {}
 
-mac_and_cheese = Recipe('Mac and Cheese', mac_and_cheese_ingredients)
+    for product, quantity in recipe.ingredients.items():
+        if product not in products_fridge:
+            shopping_list[product] = quantity
+        else:
+            if quantity > products_fridge[product]:
+                shopping_list[product] = quantity - products_fridge[product]
 
-print(mac_and_cheese)
-print(mac_and_cheese.__getitem__('macaroni'))
+    return f'This is the needed shopping list for {recipe.name}: {shopping_list}'
 
-pasta_pesto_ingredients = {'pasta': 2, 'pesto': 1}
-pasta_pesto = Recipe('Pasta with Pesto', pasta_pesto_ingredients)
-print(pasta_pesto)
 
-croque_monsieur_ingredients = {'bread': 10, 'cheese': 5, 'ham': 5}
-croque_monsieur = Recipe('Croque Monsieur', croque_monsieur_ingredients)
-print(croque_monsieur)
-
+# mac_and_cheese_ingredients = {'macaroni': 2,'cheese': 2 }
+#
+# mac_and_cheese = Recipe('Mac and Cheese', mac_and_cheese_ingredients)
+#
+# print(mac_and_cheese)
+#
+# pasta_pesto_ingredients = {'pasta': 2, 'pesto': 1}
+# pasta_pesto = Recipe('Pasta with Pesto', pasta_pesto_ingredients)
+# print(pasta_pesto)
+#
+# croque_monsieur_ingredients = {'bread': 10, 'cheese': 5, 'ham': 5}
+# croque_monsieur = Recipe('Croque Monsieur', croque_monsieur_ingredients)
+# print(croque_monsieur)
+#
 muffin_man_fridge = Fridge()
 
 muffin_man_fridge.add_item('Eggs', 30)
 muffin_man_fridge.add_item('Tomatoes', 50)
 muffin_man_fridge.add_item('Juice', 4)
-
-print(muffin_man_fridge)
-
-muffin_man_fridge.delete_item('Eggs')
-print(muffin_man_fridge)
-print(muffin_man_fridge.remove_quantity_item('Juice', 10))
-print(muffin_man_fridge.remove_quantity_item('Apples', 13))
-print(muffin_man_fridge.remove_quantity_item('Tomatoes', 10))
-print(muffin_man_fridge.remove_quantity_item('Tomatoes',40))
-print(muffin_man_fridge)
-
-muffin_man_fridge.add_item('Cheese', 30)
-muffin_man_fridge.add_item('Halloumi', 50)
-muffin_man_fridge.add_item('Veggie Burger', 4)
-muffin_man_fridge.add_item('Ham', 10)
-muffin_man_fridge.add_item('Bread', 20)
-
-if 'Juice' in muffin_man_fridge:
-    print('YES!')
-
-print(muffin_man_fridge)
-print(len(muffin_man_fridge))
-
-print(muffin_man_fridge.__getitem__('Juice'))
-print(muffin_man_fridge.__setitem__('Juice', 20))
-del muffin_man_fridge['Juice']
-
-print(muffin_man_fridge.check_recipe(mac_and_cheese))
-print(muffin_man_fridge.check_recipe(croque_monsieur))
-
-
-recipes_box = RecipesBox()
-
-recipes_box.add_recipe(croque_monsieur)
-recipes_box.add_recipe(mac_and_cheese)
-recipes_box.add_recipe(pasta_pesto)
-print(recipes_box)
-
-# print(recipes_box.delete_recipe(pasta_pesto))
+muffin_man_fridge.add_item('Cheese', 40)
+muffin_man_fridge.add_item('Pesto', 4)
+#
+# print(muffin_man_fridge)
+#
+# muffin_man_fridge.delete_item('Eggs')
+# print(muffin_man_fridge)
+# print(muffin_man_fridge.remove_quantity_item('Juice', 10))
+# print(muffin_man_fridge.remove_quantity_item('Apples', 13))
+# print(muffin_man_fridge.remove_quantity_item('Tomatoes', 10))
+# print(muffin_man_fridge.remove_quantity_item('Tomatoes',40))
+# print(muffin_man_fridge)
+#
+# muffin_man_fridge.add_item('Cheese', 30)
+# muffin_man_fridge.add_item('Halloumi', 50)
+# muffin_man_fridge.add_item('Veggie Burger', 4)
+# muffin_man_fridge.add_item('Ham', 10)
+# muffin_man_fridge.add_item('Bread', 20)
+#
+# if 'Juice' in muffin_man_fridge:
+#     print('YES!')
+#
+# print(muffin_man_fridge)
+# print(len(muffin_man_fridge))
+#
+# print(muffin_man_fridge.__getitem__('Juice'))
+# print(muffin_man_fridge.__setitem__('Juice', 20))
+# del muffin_man_fridge['Juice']
+#
+# print(muffin_man_fridge.check_recipe(mac_and_cheese))
+# print(muffin_man_fridge.check_recipe(croque_monsieur))
+#
+#
+# recipes_box = RecipesBox()
+#
+# recipes_box.add_recipe(croque_monsieur)
+# recipes_box.add_recipe(mac_and_cheese)
+# recipes_box.add_recipe(pasta_pesto)
 # print(recipes_box)
+#
+# # print(recipes_box.delete_recipe(pasta_pesto))
+# # print(recipes_box)
+#
+# print(recipes_box.pick_recipe(mac_and_cheese))
+# print(recipes_box.pick_recipe())
+#
+# print(check_the_fridge(muffin_man_fridge,recipes_box))
+#
+# print(prepare_shopping_list(muffin_man_fridge, mac_and_cheese))
+# print(prepare_shopping_list(muffin_man_fridge, pasta_pesto))
 
-print(recipes_box.pick_recipe(mac_and_cheese))
-print(recipes_box.pick_recipe())
+mac_and_cheese_ingredients = {'macaroni': 50,'cheese': 50 }
 
-print(check_the_fridge(muffin_man_fridge,recipes_box))
-
+mac_and_cheese = Recipe('Mac and Cheese', mac_and_cheese_ingredients)
+print(prepare_shopping_list(muffin_man_fridge, mac_and_cheese))

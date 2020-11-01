@@ -123,7 +123,11 @@ class Fridge(MutableMapping):
         return iter(self.products_fridge)
 
     def __str__(self):
-        return f'These are the products in your fridge: \n{", ".join(list(self.products_fridge.keys()))}'
+        stars = '*' * 20
+        print(stars, '\n', 'Items in Fridge:', '\n')
+        for index, (product, quantity) in enumerate(self.products_fridge.items(), start=1):
+            print(f'{index}. {product.title()}: {quantity}')
+        return stars
 
     def add_item(self, product, quantity):
         self.products_fridge[product] = quantity
@@ -185,6 +189,21 @@ def check_the_fridge(fridge, recipe_box):
     return f'Possible recipes you can make with the products in your fridge:{(list(possible_recipes))}'
 
 
+def prepare_shopping_list(fridge, recipe):
+    products_fridge = {item.lower(): fridge[item] for item in fridge}
+
+    shopping_list = {}
+
+    for product, quantity in recipe.ingredients.items():
+        if product not in products_fridge:
+            shopping_list[product] = quantity
+        else:
+            if quantity > products_fridge[product]:
+                shopping_list[product] = quantity - products_fridge[product]
+
+    return f'This is the needed shopping list for {recipe.name}: {shopping_list}'
+
+
 mac_and_cheese_ingredients = {'macaroni': 1,'cheese': 0.5 }
 
 mac_and_cheese = Recipe('Mac and Cheese', mac_and_cheese_ingredients)
@@ -242,10 +261,13 @@ recipes_box.add_recipe(mac_and_cheese)
 recipes_box.add_recipe(pasta_pesto)
 print(recipes_box)
 
-print(recipes_box.delete_recipe(pasta_pesto))
-print(recipes_box)
+# print(recipes_box.delete_recipe(pasta_pesto))
+# print(recipes_box)
 
 print(recipes_box.pick_recipe(mac_and_cheese))
 print(recipes_box.pick_recipe())
 
 print(check_the_fridge(muffin_man_fridge,recipes_box))
+
+print(prepare_shopping_list(muffin_man_fridge, mac_and_cheese))
+print(prepare_shopping_list(muffin_man_fridge, pasta_pesto))
