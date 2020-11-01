@@ -169,6 +169,22 @@ class Fridge(MutableMapping):
             return f'You have none of the ingredients for the {recipe.name} recipe. Go shopping and get {items_to_buy}'
 
 
+def check_the_fridge(fridge, recipe_box):
+    contents_fridge = set([item.lower() for item in fridge])
+    print('Fridge', contents_fridge)
+
+    list_ingredients_for_recipe = {recipe: set(recipe_box[recipe].keys()) for recipe in recipe_box}
+    print('Ingredients for recipe:', list_ingredients_for_recipe)
+
+    possible_recipes = []
+
+    for name, ingredients in list_ingredients_for_recipe.items():
+        if len(ingredients.intersection(contents_fridge)) >= len(ingredients)/2:
+            possible_recipes.append(name)
+
+    return f'Possible recipes you can make with the products in your fridge:{(list(possible_recipes))}'
+
+
 mac_and_cheese_ingredients = {'macaroni': 1,'cheese': 0.5 }
 
 mac_and_cheese = Recipe('Mac and Cheese', mac_and_cheese_ingredients)
@@ -231,5 +247,5 @@ print(recipes_box)
 
 print(recipes_box.pick_recipe(mac_and_cheese))
 print(recipes_box.pick_recipe())
-#
-# check_the_fridge(muffin_man_fridge,recipes_box)
+
+print(check_the_fridge(muffin_man_fridge,recipes_box))

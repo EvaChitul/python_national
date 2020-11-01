@@ -145,21 +145,17 @@ def check_the_fridge(fridge, recipe_box):
     contents_fridge = set([item.lower() for item in fridge])
     print('Fridge', contents_fridge)
 
-    list_ingredients_for_recipe = [{recipe: set(recipes_box[recipe].keys())} for recipe in recipe_box]
+    list_ingredients_for_recipe = {recipe: set(recipe_box[recipe].keys()) for recipe in recipe_box}
     print('Ingredients for recipe:', list_ingredients_for_recipe)
 
     possible_recipes = []
 
-    for entry in list_ingredients_for_recipe:
-        poz = list(entry.values())
-        print(poz[0])
-        common_ingredients =
-        # print(contents_fridge)
+    for name, ingredients in list_ingredients_for_recipe.items():
+        if len(ingredients.intersection(contents_fridge)) >= len(ingredients)/2:
+            possible_recipes.append(name)
 
-    # for recipe_ingredients in list_ingredients_for_recipe:
-    #     common_ingredients = set(recipe_ingredients).intersection(list_fridge)
-    #     print(recipes_box[recipe], common_ingredients)
-    # # print(list_ingredients_for_recipe)
+    return f'Possible recipes you can make with the products in your fridge:{(list(possible_recipes))}'
+
 
 
 mac_and_cheese_ingredients = {'macaroni': 1,'cheese': 0.5 }
@@ -226,5 +222,5 @@ print(recipes_box)
 print(recipes_box.pick_recipe(mac_and_cheese))
 print(recipes_box.pick_recipe())
 
-check_the_fridge(muffin_man_fridge,recipes_box)
+print(check_the_fridge(muffin_man_fridge,recipes_box))
 
