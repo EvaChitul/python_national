@@ -5,29 +5,57 @@ import random
 import pprint
 
 
-class Recipe(Mapping):
+class Recipe:
+    is_initialized = False
 
-    def __init__(self, name, ingredients = None):
+    def __init__(self, name, ingredients):
         self.name = name
         self.ingredients = ingredients if ingredients else {}
 
-    def __iter__(self):
-        return iter(self.ingredients)
+    def __str__(self):
+        number_of_stars = len(self.name) + 3
+        pretty_string = '*' * number_of_stars + '\n' + self.name + '\n' + '*' * number_of_stars + '\n'
+
+        for index, (key, value) in enumerate(self.ingredients.items(), start = 1):
+            pretty_string = '\n'.join((pretty_string, f'{index}. {key.title()}: {value}'))
+
+        pretty_string = pretty_string + '\n' * 2 + '*' * number_of_stars
+        return pretty_string
+
+    def __getitem__(self, given_index):
+        for index, (key, value) in enumerate(self.ingredients.items(), start = 1):
+            if given_index == index:
+                return {key: value}
 
     def __len__(self):
         return len(self.ingredients)
 
-    def __getitem__(self, ingredient):
-        return self.ingredients[ingredient]
+    def __iter__(self):
+        return iter(self.ingredients)
 
-    def __str__(self):
-        print('*'*20,'\n',self.name,'\n','*'*20)
-        for index, ingredient in enumerate(self.ingredients, start = 1):
-            print(index,'.', ingredient.title(),':', self.ingredients[ingredient],'\n')
-        return('*' * 20)
+    def keys(self):
+        return self.ingredients.keys()
 
-    def __repr__(self):
-        print(self.ingredients.keys())
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, name):
+        if self.is_initialized:
+            raise NameError("You can't update the recipe!")
+        self._name = name
+
+    @property
+    def ingredients(self):
+        return self._ingredients
+
+    @ingredients.setter
+    def ingredients(self, ingredients):
+        if self.is_initialized:
+            raise NameError("You can't update the recipe!")
+        self._ingredients = ingredients
+        self.is_initialized = True
 
 
 class RecipesBox(MutableSequence):
@@ -141,33 +169,11 @@ class Fridge(MutableMapping):
             return f'You have none of the ingredients for the {recipe.name} recipe. Go shopping and get {items_to_buy}'
 
 
-def check_the_fridge(fridge, recipe_box):
-    contents_fridge = set([item.lower() for item in fridge])
-    print('Fridge', contents_fridge)
-
-    list_ingredients_for_recipe = [{recipe: set(recipes_box[recipe].keys())} for recipe in recipe_box]
-    print('Ingredients for recipe:', list_ingredients_for_recipe)
-
-    possible_recipes = []
-
-    for entry in list_ingredients_for_recipe:
-        poz = list(entry.values())
-        print(poz[0])
-        common_ingredients =
-        # print(contents_fridge)
-
-    # for recipe_ingredients in list_ingredients_for_recipe:
-    #     common_ingredients = set(recipe_ingredients).intersection(list_fridge)
-    #     print(recipes_box[recipe], common_ingredients)
-    # # print(list_ingredients_for_recipe)
-
-
 mac_and_cheese_ingredients = {'macaroni': 1,'cheese': 0.5 }
 
 mac_and_cheese = Recipe('Mac and Cheese', mac_and_cheese_ingredients)
 
 print(mac_and_cheese)
-print(mac_and_cheese.__getitem__('macaroni'))
 
 pasta_pesto_ingredients = {'pasta': 2, 'pesto': 1}
 pasta_pesto = Recipe('Pasta with Pesto', pasta_pesto_ingredients)
@@ -220,11 +226,10 @@ recipes_box.add_recipe(mac_and_cheese)
 recipes_box.add_recipe(pasta_pesto)
 print(recipes_box)
 
-# print(recipes_box.delete_recipe(pasta_pesto))
-# print(recipes_box)
+print(recipes_box.delete_recipe(pasta_pesto))
+print(recipes_box)
 
 print(recipes_box.pick_recipe(mac_and_cheese))
 print(recipes_box.pick_recipe())
-
-check_the_fridge(muffin_man_fridge,recipes_box)
-
+#
+# check_the_fridge(muffin_man_fridge,recipes_box)
